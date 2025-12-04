@@ -28,7 +28,7 @@ namespace TCG_Card_System.Scripts.Effects
             _thicknessAmountProperty = Shader.PropertyToID(thicknessPropertyReference);
             _colorProperty = Shader.PropertyToID(colorPropertyReference);
             
-            _material = GetComponent<MeshRenderer>().material;
+            _material = GetComponent<SpriteRenderer>().material;
             _color = _material.GetColor(_colorProperty);
             _visible = _material.GetFloat(_thicknessAmountProperty) > 0f;
         }

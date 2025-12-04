@@ -1,4 +1,4 @@
-using System;
+ using System;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using TCG_Card_System.Scripts.EventArgs;
@@ -82,7 +82,7 @@ namespace TCG_Card_System.Scripts.Player
             var focusedIndex = Cards.FindIndex(x => x.Data.Id == card.Data.Id);
             CardIndexFocused?.Invoke(this, focusedIndex);
             
-            var cardTransforms = GetCardTransforms(Cards.Count, focusedIndex);
+            var cardTransforms = GetCardTransforms(Cards, focusedIndex);
 
             for (var i = 0; i < Cards.Count; i++)
             {
@@ -94,17 +94,16 @@ namespace TCG_Card_System.Scripts.Player
                     var cardAccessor = cardByIndex.GameObject.GetComponent<CardAccessor>();
                     cardAccessor.CardSortingGroup.sortingOrder = 100;
                     cardAccessor.FrameSortingGroup.sortingOrder = 100;
-
                     CardAnimationStart
                     (
                         cardByIndex,
                         new Vector3(
                             cardTransform.Position.x,
-                            cardByIndex.GameObject.transform.parent.transform.position.y + 2f,
-                            cardByIndex.GameObject.transform.parent.transform.position.z + 4.4f
+                            cardByIndex.GameObject.transform.parent.transform.position.y,
+                            cardByIndex.GameObject.transform.parent.transform.position.z 
                         ),
                         cardTransform.Rotation,
-                        cardScale * 2f,
+                        cardScale * 1.3f,
                         animationSpeed: 8
                     ).Forget();
                 }
@@ -130,7 +129,7 @@ namespace TCG_Card_System.Scripts.Player
             var focusedIndex = Cards.FindIndex(x => x.Data.Id == card.Data.Id);
             CardIndexUnfocused?.Invoke(this, focusedIndex);
             
-            var cardTransforms = GetCardTransforms(Cards.Count);
+            var cardTransforms = GetCardTransforms(Cards);
 
             for (var i = 0; i < Cards.Count; i++)
             {
@@ -173,17 +172,16 @@ namespace TCG_Card_System.Scripts.Player
 
             var isOnTop = IsCardOnTopOfDroppableArea(cardPosition);
             CardAnimateBetweenFrame(args.Card, isOnTop).Forget();
-            
             if (!isOnTop)
                 return;
-
+            
             var newVirtualIndex = PlayerCardBoardManager.Instance.FindVirtualIndex(args.Card);
-
+            
             if (VirtualIndex == newVirtualIndex) 
                 return;
             
             VirtualIndex = newVirtualIndex;
-            PlayerCardBoardManager.Instance.RepositionCards(VirtualIndex);
+            PlayerCardBoardManager.Instance.RepositionCards(args.Card, VirtualIndex);
         }
 
         private void OnCardDraggingEnded(object sender, CardDragEventArgs args)
@@ -197,7 +195,7 @@ namespace TCG_Card_System.Scripts.Player
             var cardPosition = new Vector3(args.Position.x, args.Card.GameObject.transform.position.y, args.Position.z);
             
             var isOnTop = IsCardOnTopOfDroppableArea(cardPosition);
-            if (isOnTop)
+            if (isOnTop && PlayerCardBoardManager.Instance.HasEnoughSlotsFor(args.Card))
             {
                 Cards.Remove(args.Card);
                 PlayerCardBoardManager.Instance.PlayCard(args.Card);
@@ -205,6 +203,7 @@ namespace TCG_Card_System.Scripts.Player
             else
             {
                 ReturnDraggedCardBackToHand();
+                PlayerCardBoardManager.Instance.RepositionCards(args.Card);
             }
         }
     }

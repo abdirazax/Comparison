@@ -26,6 +26,7 @@ namespace TCG_Card_System.Scripts.Player
         
         public async UniTask DrawCardToMidPoint(Card card)
         {
+            
             card.GameObject.transform.SetParent(midPointTransform);
 
             await CardAnimationStart

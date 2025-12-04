@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardLayout: {fileID: 8066681447692223031}
-  frameLayout: {fileID: 909135008433916432}
+  attackLayout: {fileID: 909135008433916432}
 --- !u!1001 &5860036400017443726
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -126,25 +126,35 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4092317432328789785, guid: 2eafe28f7e3c4417fa16ba4dbab86671,
+    - target: {fileID: 2627453708177328161, guid: 2eafe28f7e3c4417fa16ba4dbab86671,
         type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.55
+      propertyPath: m_Sprite
+      value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 4092317432328789785, guid: 2eafe28f7e3c4417fa16ba4dbab86671,
+    - target: {fileID: 2627453708177328161, guid: 2eafe28f7e3c4417fa16ba4dbab86671,
         type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.825
+      propertyPath: m_WasSpriteAssigned
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4092317432328789785, guid: 2eafe28f7e3c4417fa16ba4dbab86671,
+    - target: {fileID: 3367663757807328605, guid: 2eafe28f7e3c4417fa16ba4dbab86671,
         type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.55
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5775706985932281287, guid: 2eafe28f7e3c4417fa16ba4dbab86671,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7979946527059188100, guid: 2eafe28f7e3c4417fa16ba4dbab86671,
         type: 3}
       propertyPath: m_Name
-      value: Frame
+      value: Attack
+      objectReference: {fileID: 0}
+    - target: {fileID: 7979946527059188100, guid: 2eafe28f7e3c4417fa16ba4dbab86671,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2423393842061327109, guid: 60a20aa400bb647028cbb7e14033731a,
         type: 3}
@@ -176,10 +186,60 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5206654623503991966}
     m_Modifications:
+    - target: {fileID: 1318857743913012774, guid: d774bad8d028149c583aeeee402232a3,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2752787553052385386, guid: d774bad8d028149c583aeeee402232a3,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2752787553052385386, guid: d774bad8d028149c583aeeee402232a3,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2752787553052385386, guid: d774bad8d028149c583aeeee402232a3,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3745566047383735784, guid: d774bad8d028149c583aeeee402232a3,
         type: 3}
       propertyPath: m_Name
       value: CardFront
+      objectReference: {fileID: 0}
+    - target: {fileID: 4903455238088138528, guid: d774bad8d028149c583aeeee402232a3,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5736335135248751816, guid: d774bad8d028149c583aeeee402232a3,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5736335135248751816, guid: d774bad8d028149c583aeeee402232a3,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5736335135248751816, guid: d774bad8d028149c583aeeee402232a3,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5893322155009014055, guid: d774bad8d028149c583aeeee402232a3,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7563246145574256144, guid: d774bad8d028149c583aeeee402232a3,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9069162185316477601, guid: d774bad8d028149c583aeeee402232a3,
         type: 3}
@@ -231,7 +291,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 9175133602870340488, guid: d774bad8d028149c583aeeee402232a3,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: eaf6693355602ef40a29aa6e168941ee,
+        type: 3}
+    m_RemovedComponents:
+    - {fileID: 8735616450254570088, guid: d774bad8d028149c583aeeee402232a3, type: 3}
+    - {fileID: 5893322155009014055, guid: d774bad8d028149c583aeeee402232a3, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

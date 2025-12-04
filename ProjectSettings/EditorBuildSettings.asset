@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Battle/BattleScene.unity
     guid: cde78f7034dee4a9a97bad558a631829
+  - enabled: 1
+    path: Assets/Scenes/Cards.unity
+    guid: 78e3a5bca58118d40a7741c2db041b91
   m_configObjects:
     com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000,
       guid: 87c3ee0a0b66f4fe79b7e3526e72e7d7, type: 2}

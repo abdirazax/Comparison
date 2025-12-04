@@ -44,14 +44,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c32a678685e640fd8c8d0b6153aaf841, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gridManager: {fileID: 0}
+  maxCardSlots: 13
   cardPrefab: {fileID: 4745986176751959920, guid: ebc71bcff6284421ab1028b9aa6d62f5,
     type: 3}
-  cardScale: {x: 5, y: 5, z: 1}
-  cardSpreadWidth: 6
-  cardSpreadWidthIntensity: 1.2
-  cardSpreadAngle: 15
-  cardSpreadAngleIntensity: 0.8
-  cardZAxisPeak: 1
+  cardScale: {x: 10, y: 10, z: 1}
+  gridOffsetWhenPreparing: {x: 3, y: -2, z: 0}
+  gridOffsetAtBattle: {x: 3, y: -4, z: 0}
+  cardSpreadWidth: 8
+  cardSpreadWidthIntensity: 1
+  cardSpreadAngle: 0
+  cardSpreadAngleIntensity: 0
+  cardZAxisPeak: 0.5
   cardZAxisIntensity: 0.15
   mirror: 0
+  battleStateManager: {fileID: 0}
   droppableGameObject: {fileID: 0}

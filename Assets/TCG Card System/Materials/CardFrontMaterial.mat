@@ -16,8 +16,7 @@ Material:
   - _ALPHAPREMULTIPLY_ON
   - _SPECULAR_SETUP
   - _SURFACE_TYPE_TRANSPARENT
-  m_InvalidKeywords:
-  - _EMISSION
+  m_InvalidKeywords: []
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -32,7 +31,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BackSideImage:
-        m_Texture: {fileID: 2800000, guid: 2ce68c58f89ec494ba98cb4b47d27174, type: 3}
+        m_Texture: {fileID: 2800000, guid: 4979513f9917755478851eaf51178e88, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Back_Side:
@@ -48,11 +47,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FrontSideImage:
-        m_Texture: {fileID: 2800000, guid: 4f5f63520732146a98c4076e158e135c, type: 3}
+        m_Texture: {fileID: 2800000, guid: b993bc7ee0db5604a9efbd5e7c947133, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FrontSideMask:
-        m_Texture: {fileID: 2800000, guid: ca9b683e609904f28af38cd2d82a31df, type: 3}
+        m_Texture: {fileID: 2800000, guid: f844c5af0cbed534cac27b77cc762449, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Front_Side:
@@ -141,4 +140,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 10
+  version: 9
