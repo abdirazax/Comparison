@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 3dfdc4fd49f54c05a645f7b6f1656eb6
+timeCreated: 1740414373
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Scripts/EventArgs/CardDragEventArgs.cs
+  uploadId: 738761

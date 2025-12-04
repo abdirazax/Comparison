@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: f6705da3dd95542648bdecaf828b2ccf
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Prefabs/PlayerHand.prefab
+  uploadId: 738761

@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 5f7d14a4aac04d9f9c92b1bffa6b0c85
+timeCreated: 1740415714
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Scripts/Animations/CardAttackMeleeAnimationAccessor.cs
+  uploadId: 738761

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2adb2e13320a4475890bb24ae5914c1a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Fonts/LiberationSans SDF.asset
+  uploadId: 738761

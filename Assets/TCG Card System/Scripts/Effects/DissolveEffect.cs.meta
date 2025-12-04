@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: a4c07e9994bf4da69953873c97107823
+timeCreated: 1740414508
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Scripts/Effects/DissolveEffect.cs
+  uploadId: 738761

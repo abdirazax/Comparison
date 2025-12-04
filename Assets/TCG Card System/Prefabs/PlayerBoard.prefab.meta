@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: aefd4ae6351cc445e9a2bcfb16004d9f
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Prefabs/PlayerBoard.prefab
+  uploadId: 738761

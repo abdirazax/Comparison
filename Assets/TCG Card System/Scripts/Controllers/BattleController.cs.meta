@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: d25a898d17624eb3adf9ea5892cd9b07
+timeCreated: 1740420656
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Scripts/Controllers/BattleController.cs
+  uploadId: 738761

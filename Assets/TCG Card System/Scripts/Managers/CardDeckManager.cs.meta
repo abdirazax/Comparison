@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 35c67d4d59af4aa28976437dc6cd86e5
+timeCreated: 1740415048
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Scripts/Managers/CardDeckManager.cs
+  uploadId: 738761

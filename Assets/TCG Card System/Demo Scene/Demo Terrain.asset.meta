@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ea01a80bcafd74f1dbb3be91a927f0a7
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 15600000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Demo Scene/Demo Terrain.asset
+  uploadId: 738761

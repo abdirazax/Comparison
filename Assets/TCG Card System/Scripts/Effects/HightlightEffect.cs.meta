@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 1874921b3b6a4d0fb9fdaabb2404230c
+timeCreated: 1740414508
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Scripts/Effects/HightlightEffect.cs
+  uploadId: 738761

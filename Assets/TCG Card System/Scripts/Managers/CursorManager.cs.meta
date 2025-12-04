@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 862d49eb0dfd4d2b86955233b797a515
+timeCreated: 1740416514
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Scripts/Managers/CursorManager.cs
+  uploadId: 738761

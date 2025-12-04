@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 2eafe28f7e3c4417fa16ba4dbab86671
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Prefabs/Frame.prefab
+  uploadId: 738761

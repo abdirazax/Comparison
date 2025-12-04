@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: f0ac29ba7717d43d1b0a228821dbad12
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Prefabs/OpponentDeck.prefab
+  uploadId: 738761

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 35b87c26c2bfb4bebb59ab5841726e9d
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Prefabs/PointerHead.prefab
+  uploadId: 738761

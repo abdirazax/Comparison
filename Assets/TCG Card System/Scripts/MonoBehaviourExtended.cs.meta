@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 2a595b6a5c814ae9a8d20c24bc9679b2
+timeCreated: 1740415828
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Scripts/MonoBehaviourExtended.cs
+  uploadId: 738761

@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 99bbab49f68e41aeb80d0f03f66ebbe4
+timeCreated: 1740415951
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Scripts/Enums/ECardAttack.cs
+  uploadId: 738761

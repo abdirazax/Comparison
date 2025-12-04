@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 17757c7d392b4affbc8c746c6734ac36
+timeCreated: 1740422269
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Scripts/Opponent/OpponentCardHandManager.cs
+  uploadId: 738761

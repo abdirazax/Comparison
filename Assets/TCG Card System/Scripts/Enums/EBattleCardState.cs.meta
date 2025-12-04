@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: b8f6e7ffa6b942b2a8879cff5973770d
+timeCreated: 1740425301
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Scripts/Enums/EBattleCardState.cs
+  uploadId: 738761

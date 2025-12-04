@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d6341d2746d1a48298a84ab7b12a82e7
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Fonts/LHF Uncial Caps Regular SDF.asset
+  uploadId: 738761

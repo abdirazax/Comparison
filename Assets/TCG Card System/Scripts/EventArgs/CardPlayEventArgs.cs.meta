@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 613e5c85b44e4e7b8c197175365e9661
+timeCreated: 1740415519
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Scripts/EventArgs/CardPlayEventArgs.cs
+  uploadId: 738761

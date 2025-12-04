@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c240c42dd5bb24582ad1451075e4cf5c
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Materials/FrameMaterial.mat
+  uploadId: 738761

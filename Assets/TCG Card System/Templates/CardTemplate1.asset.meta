@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8afd26bf3baed4739af803a43f3b51ea
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Templates/CardTemplate1.asset
+  uploadId: 738761

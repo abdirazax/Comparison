@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: c32a678685e640fd8c8d0b6153aaf841
+timeCreated: 1740416465
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Scripts/Player/PlayerCardHandManager.cs
+  uploadId: 738761

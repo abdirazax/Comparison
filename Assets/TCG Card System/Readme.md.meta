@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: af0f107a12d764cab9292147eddc5628
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Readme.md
+  uploadId: 738761

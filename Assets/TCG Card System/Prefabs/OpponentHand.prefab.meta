@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 045f526ab05984c7c86db79a2485494e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Prefabs/OpponentHand.prefab
+  uploadId: 738761

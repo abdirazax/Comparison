@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 7919bbba9be404f13a0e80c2346cc461
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Prefabs/PlayerDeck.prefab
+  uploadId: 738761

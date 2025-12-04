@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 9b69c2c8d845457b8469d37baa95ad40
+timeCreated: 1740414508
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Scripts/Effects/ScaleEffect.cs
+  uploadId: 738761

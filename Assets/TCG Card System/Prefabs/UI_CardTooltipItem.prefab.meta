@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: d0e24a32fd2cc4e2280099c4573dbe84
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Prefabs/UI_CardTooltipItem.prefab
+  uploadId: 738761

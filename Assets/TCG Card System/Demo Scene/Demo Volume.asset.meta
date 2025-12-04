@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ab2f6fa30ec624121ae4f5c18bfcfb94
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Demo Scene/Demo Volume.asset
+  uploadId: 738761

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: d774bad8d028149c583aeeee402232a3
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Prefabs/CardFront.prefab
+  uploadId: 738761

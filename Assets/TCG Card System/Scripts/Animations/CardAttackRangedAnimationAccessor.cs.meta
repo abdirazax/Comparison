@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 985ae3ff8eb04918ba5024ec50722b12
+timeCreated: 1740415714
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Scripts/Animations/CardAttackRangedAnimationAccessor.cs
+  uploadId: 738761

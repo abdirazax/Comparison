@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: aed90f70a02f4d888ba18326be7155c8
+timeCreated: 1740418011
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Scripts/Effects/ShowUIOnFaceEffect.cs
+  uploadId: 738761

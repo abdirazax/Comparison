@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 2a75dfe590104aa8941936af0695ddf6
+timeCreated: 1740422269
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Scripts/Opponent/OpponentCardBoardManager.cs
+  uploadId: 738761

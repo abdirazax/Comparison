@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 3f66de481941f4289b5d482b9a0f11f0
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Prefabs/OpponentBoard.prefab
+  uploadId: 738761

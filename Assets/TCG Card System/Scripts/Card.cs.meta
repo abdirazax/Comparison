@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: acee10d949d64ca0a2efd82ae70da84a
+timeCreated: 1740414199
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312086
+  packageName: TCG Card System
+  packageVersion: 1.0.1
+  assetPath: Assets/TCG Card System/Scripts/Card.cs
+  uploadId: 738761
