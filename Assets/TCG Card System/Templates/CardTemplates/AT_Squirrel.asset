@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d81356434d8f488db0cf3d403b4b6b19, type: 3}
+  m_Name: AT_Squirrel
+  m_EditorClassIdentifier: 
+  onCardSprite:
+  - {fileID: 21300000, guid: 9348f0027a7329a4e913f3aea49762df, type: 3}
+  - {fileID: 21300000, guid: db4dad707a2443946805be5e0a37a0d4, type: 3}
+  - {fileID: 21300000, guid: 68378cb2822f6aa428de51985c61b225, type: 3}
+  onCardMaterial: {fileID: 2100000, guid: 9948ea8c3dba5f148a054c25de9e9fc4, type: 2}
+  onCardColor:
+  - {r: 0, g: 0, b: 0, a: 1}
+  - {r: NaN, g: NaN, b: NaN, a: 1}
+  - {r: NaN, g: NaN, b: NaN, a: 1}
+  onTargetSprite:
+  - {fileID: 21300000, guid: 30e03870a946db24885f5732f503437e, type: 3}
+  - {fileID: 21300000, guid: 30e03870a946db24885f5732f503437e, type: 3}
+  - {fileID: 21300000, guid: 9bc4f9dffdf07784c973e1429e0247ce, type: 3}
+  onTargetMaterial: {fileID: 2100000, guid: 457468c111dbafa48b452fe65e7a6e99, type: 2}
+  onTargetColor:
+  - {r: 3.9999995, g: 0.7421397, b: 0, a: 1}
+  - {r: 0, g: 1.8070039, b: 2, a: 1}
+  - {r: 0, g: 0.9294118, b: 0.9450981, a: 1}
+  bulletSprite:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  bulletMaterial: {fileID: 0}
+  bulletColor:
+  - {r: -1.1471366e+34, g: 7.03e-43, b: -1.1474932e+34, a: 7.03e-43}
+  - {r: -1.1470297e+34, g: 7.03e-43, b: -1.1476001e+34, a: 7.03e-43}
+  - {r: -1.1475169e+34, g: 7.03e-43, b: -1.1471842e+34, a: 7.03e-43}
+  bulletTrailSprite:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  bulletTrailMaterial: {fileID: 0}
+  bulletTrailColor:
+  - {r: -1.1471366e+34, g: 7.03e-43, b: -1.1474932e+34, a: 7.03e-43}
+  - {r: -1.1470297e+34, g: 7.03e-43, b: -1.1476001e+34, a: 7.03e-43}
+  - {r: -1.1475169e+34, g: 7.03e-43, b: -1.1471842e+34, a: 7.03e-43}
+  muzzleFlashSprite:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  muzzleFlashMaterial: {fileID: 0}
+  muzzleFlashColor:
+  - {r: -1.1471366e+34, g: 7.03e-43, b: -1.1474932e+34, a: 7.03e-43}
+  - {r: -1.1470297e+34, g: 7.03e-43, b: -1.1476001e+34, a: 7.03e-43}
+  - {r: -1.1475169e+34, g: 7.03e-43, b: -1.1471842e+34, a: 7.03e-43}
+  onCardEffectDurationFactor:
+  - {x: 0.06, y: 0.3, z: 0.06, w: 0}
+  - {x: 0.06, y: 0.3, z: 0.06, w: 0}
+  - {x: 0.06, y: 0.3, z: 0.06, w: 0}
+  onEnemyEffectDurationFactor:
+  - {x: 0.06, y: 0.3, z: 0.06, w: 0.25}
+  - {x: 0.06, y: 0.3, z: 0.06, w: 0.25}
+  - {x: 0.06, y: 0.3, z: 0.06, w: 0.25}
+  bulletTrailEffectDurationFactor:
+  - {x: 0.06, y: 0.3, z: 0.06, w: 0}
+  - {x: 0.06, y: 0.3, z: 0.06, w: 0}
+  - {x: 0.06, y: 0.3, z: 0.06, w: 0}

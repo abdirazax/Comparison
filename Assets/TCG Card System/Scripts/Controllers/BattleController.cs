@@ -2,76 +2,108 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using TCG_Card_System.Scripts.Enums;
+using TCG_Card_System.Scripts.EventArgs;
 using TCG_Card_System.Scripts.Managers;
 using TCG_Card_System.Scripts.Opponent;
 using TCG_Card_System.Scripts.Player;
+using TCG_Card_System.Scripts.States;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = System.Random;
 
 namespace TCG_Card_System.Scripts.Controllers
 {
+    [RequireComponent(typeof(BattleStateManager))]
     public class BattleController : MonoBehaviour
     {
-        private void OnGUI()
+        BattleStateManager _battleStateManager;
+        [SerializeField] private Button _playerButton1, _playerButton2, _opponentButton1, _opponentButton2;
+        private TMP_Text _playerButton1Text, _playerButton2Text, _opponentButton1Text, _opponentButton2Text;
+        private void Awake()
         {
-            PlayerCardBoardManager.Instance.CardAttackedCardStarted += Local_PlayerCardAttackedCardStarted;
-            PlayerCardBoardManager.Instance.CardAttackedCardEnded += Local_PlayerCardAttackedCardEnded;
-            
-            if (GUI.Button(new Rect(10, 5, 150, 50), "[Player] Serve Card"))
+            _battleStateManager = GetComponent<BattleStateManager>();
+            _playerButton1Text = _playerButton1.GetComponentInChildren<TMP_Text>();
+            _playerButton2Text = _playerButton2.GetComponentInChildren<TMP_Text>();
+            _opponentButton1Text = _opponentButton1.GetComponentInChildren<TMP_Text>();
+            _opponentButton2Text = _opponentButton2.GetComponentInChildren<TMP_Text>();
+        }
+
+        private void OnEnable()
+        {
+            _battleStateManager.OnBattleStateChanged += OnBattleStateChanged;
+
+        }
+
+        private void OnBattleStateChanged(object sender, BattleStateEventArgs e)
+        {
+            if (e.BattleState is BattleGoingOnState)
             {
-                PlayerServeCardToHand();
+                _playerButton1.gameObject.SetActive(true);
+                _playerButton2.gameObject.SetActive(false);
+                _playerButton1Text.text = "End Game";
+                _playerButton1.onClick.RemoveAllListeners();
+                _playerButton1.onClick.AddListener(() =>
+                {
+                    _battleStateManager.EndBattle();
+                });
+                _opponentButton1.gameObject.SetActive(false);
+                _opponentButton2.gameObject.SetActive(false);
             }
-            if (GUI.Button(new Rect(160, 5, 150, 50), "[Player] Start Turn"))
+            else if (e.BattleState is BattlePreparingState)
             {
-                PlayerHandTurnStarted();
-                PlayerBoardTurnStarted();
+                _playerButton1.gameObject.SetActive(true);
+                _playerButton2.gameObject.SetActive(true);
+                _playerButton1Text.text = "Serve Card";
+                _playerButton2Text.text = "Start Game";
+                _playerButton1.onClick.RemoveAllListeners();
+                _playerButton2.onClick.RemoveAllListeners();
+                _playerButton1.onClick.AddListener(() => {
+                    PlayerServeCardToHand();
+                });
+                _playerButton2.onClick.AddListener(() => {
+                    _battleStateManager.StartBattle();
+                });
+                _opponentButton1.gameObject.SetActive(true);
+                _opponentButton2.gameObject.SetActive(true);
+                _opponentButton1Text.text = "Serve Card";
+                _opponentButton2Text.text = "Play Card";
+                _opponentButton1.onClick.RemoveAllListeners();
+                _opponentButton2.onClick.RemoveAllListeners();
+                _opponentButton1.onClick.AddListener(() => {
+                    OpponentServeCardToHand();
+                });
+                _opponentButton2.onClick.AddListener(() => {
+                    OpponentPlayCardFromHand();
+                });
             }
-            if (GUI.Button(new Rect(160, 55, 150, 50), "[Player] End Turn"))
+            else if (e.BattleState is BattleEndState)
             {
-               PlayerHandTurnEnded();
-               PlayerBoardTurnEnded();
-            }
-            
-            if (GUI.Button(new Rect(410, 5, 150, 50), "[Opponent] Serve Card"))
-            {
-                OpponentServeCardToHand();
-            }
-            if (GUI.Button(new Rect(560, 5, 150, 50), "[Opponent] Play Card"))
-            {
-                OpponentPlayCardFromHand();
-            }
-            if (GUI.Button(new Rect(710, 5, 160, 50), "[Opponent] Attack Player"))
-            {
-                OpponentAttackPlayerCard();
+                _playerButton1.gameObject.SetActive(true);
+                _playerButton2.gameObject.SetActive(false);
+                _playerButton1Text.text = "Restart Game";
+                _playerButton1.onClick.RemoveAllListeners();
+                _playerButton1.onClick.AddListener(() => {
+                    _battleStateManager.ResetBattle();
+                });
+                _opponentButton1.gameObject.SetActive(false);
+                _opponentButton2.gameObject.SetActive(false);
             }
         }
+
+        private void OnDisable()
+        {
+            _battleStateManager.OnBattleStateChanged -= OnBattleStateChanged;
+            PlayerCardBoardManager.Instance.OnCardAttackedBoardStarted -= LocalPlayerOnCardAttackedBoardStarted;
+            PlayerCardBoardManager.Instance.OnCardAttackedBoardEnded -= LocalPlayerOnCardAttackedBoardEnded;
+        }
+        
 
         #region Player
         
         private async void PlayerServeCardToHand()
         {
-            var random = new Random();
-            var mana = random.Next(1, 9);
-            var health = random.Next(1, 9);
-            var attack = random.Next(1, 9);
-
-            var templateIndex = random.Next(0, CardCollectionManager.Instance.cardTemplates.Count);
-                
-            var card = PlayerCardDeckManager.Instance.CardPrepareForDraw(new CardData
-            {
-                Id = Guid.NewGuid().ToString("N"),
-                TotalMana = mana,
-                Mana = mana,
-                TotalHealth = health,
-                Health = health,
-                TotalAttack = attack,
-                Attack = attack,
-                TemplateId = CardCollectionManager.Instance.cardTemplates[templateIndex].id,
-            });
-            await PlayerCardDeckManager.Instance.DrawCardToMidPoint(card);
-            await UniTask.Delay(TimeSpan.FromSeconds(1));
-                
-            await PlayerCardHandManager.Instance.DrawCard(card);
+            ServeTemplateCardForHand(CardCollectionManager.Instance.playerCardTemplates, PlayerCardHandManager.Instance, PlayerCardDeckManager.Instance);
         }
 
         private void PlayerHandTurnStarted()
@@ -91,102 +123,93 @@ namespace TCG_Card_System.Scripts.Controllers
             CardEvents.Instance.SetDraggingEnabled();
         }
         
-        private void PlayerHandTurnEnded()
-        {
-            var cards = PlayerCardHandManager.Instance.Cards;
-
-            foreach (var card in cards)
-            {
-                PlayerCardHandManager.Instance.HideCardHighlight(card);
-            }
-                
-            CardEvents.Instance.SetDraggingDisabled();
-        }
-
-        private void PlayerBoardTurnStarted()
-        {
-            var cards = PlayerCardBoardManager.Instance.Cards;
-
-            foreach (var card in cards)
-            {
-                card.Data.CanAttack = true;
-                
-                PlayerCardBoardManager.Instance.ShowFrameHighlight
-                (
-                    card,
-                    4,
-                    new Color(0, 191, 67, 255)
-                );    
-            }
-        }
-
-        public void PlayerBoardTurnEnded()
-        {
-            foreach (var card in PlayerCardBoardManager.Instance.Cards)
-                PlayerCardBoardManager.Instance.HideFrameHighlight(card);
-        }
         
         
-        private void Local_PlayerCardAttackedCardStarted(object sender, (string CardId, string TargetCardId) args)
+        private void LocalPlayerOnCardAttackedBoardStarted(object sender, CardAttackEventArgs args)
         {
-            var (cardId, targetCardId) = args;
             
-            var card = PlayerCardBoardManager.Instance.GetCardById(cardId);
+            var card = PlayerCardBoardManager.Instance.GetCardById(args.CardId);
             card.Data.CanAttack = false;
             
             PlayerCardBoardManager.Instance.HideFrameHighlight(card);
         }
         
-        private async void Local_PlayerCardAttackedCardEnded(object sender, (string CardId, string TargetCardId) args)
+        private async void LocalPlayerOnCardAttackedBoardEnded(object sender, CardAttackEventArgs args)
         {
-            var (cardId, targetCardId) = args;
-            var card = PlayerCardBoardManager.Instance.GetCardById(cardId);
-            var targetCard = OpponentCardBoardManager.Instance.GetCardById(targetCardId);
+            var card = PlayerCardBoardManager.Instance.GetCardById(args.CardId);
+            var targetBoard = OpponentCardBoardManager.Instance;
 
             var tasks = new List<UniTask>
             {
-                PlayerCardBoardManager.Instance.CardAttackOpponentCardShowDamage(card, targetCard),
+                PlayerCardBoardManager.Instance.CardAttackOpponentCardBoardShowDamage(card, args.TargetBoard),
             };
-
-            if (card.Template.attackType.type == ECardAttack.Melee)
-            {
-                tasks.Add(OpponentCardBoardManager.Instance.CardAttackOpponentCardShowDamage(targetCard, card));
-            }
+            
             
             await UniTask.WhenAll(tasks);
             
-            PlayerCardBoardManager.Instance.CardDestroy(cardId).Forget();      
-            OpponentCardBoardManager.Instance.CardDestroy(targetCardId).Forget();
         }
         #endregion
         
-        
+        /// <summary>
+        /// This section contains methods for the opponent's actions during the battle.
+        /// </summary>
         #region Opponent
-        private async void OpponentServeCardToHand()
+        private void OpponentServeCardToHand()
         {
-            var card = OpponentCardDeckManager.Instance.CardPrepareForDraw(null);
-            
-            await OpponentCardHandManager.Instance.DrawCard(card);
+            ServeTemplateCardForHand(CardCollectionManager.Instance.opponentCardTemplates, OpponentCardHandManager.Instance, OpponentCardDeckManager.Instance);
         }
 
-        private async void OpponentPlayCardFromHand()
+        async void ServeTemplateCardForHand(List<CardTemplate> cardTemplates, CardHandManager cardHandManager, CardDeckManager cardDeckManager)
         {
             var random = new Random();
-            var cardIndex = random.Next(0, OpponentCardHandManager.Instance.Cards.Count);
-
-            if (cardIndex < 0)
-                return;
+            var chosenCard = cardTemplates[random.Next(0, cardTemplates.Count)];
             
-            var card = OpponentCardHandManager.Instance.GetCardByIndex(cardIndex);
-            var cardAccessor = card.GameObject.GetComponent<CardAccessor>();
+            var autoAttackInterval = UnityEngine.Random.Range
+                (chosenCard.autoAttackInterval - 1, 
+                    chosenCard.autoAttackInterval + 3);
+            if(!cardHandManager.HasEnoughSlotsFor(chosenCard.slotSize))
+                return;                
+            var card = cardDeckManager.CardPrepareForDraw(new CardData
+            {
+                Id = Guid.NewGuid().ToString("N"),
+                TotalMana = chosenCard.mana,
+                Mana = chosenCard.mana,
+                TotalHealth = chosenCard.health,
+                Health = chosenCard.health,
+                TotalAttack = chosenCard.attack,
+                Attack = chosenCard.attack,
+                TemplateId = chosenCard.id,
+                AutoAttackInterval = autoAttackInterval,
+                AttacksPerInterval = chosenCard.attackPerInterval
+            });
             
+            await cardHandManager.DrawCard(card);
+        }
+        
+        async void ServeRandomCardForHand(List<CardTemplate> cardTemplates, CardHandManager cardHandManager, CardDeckManager cardDeckManager)
+        {
+            var random = new Random();
             var mana = random.Next(1, 9);
             var health = random.Next(1, 9);
-            var attack = random.Next(1, 9);
-
-            var templateIndex = random.Next(0, CardCollectionManager.Instance.cardTemplates.Count);
+            var autoAttackInterval = UnityEngine.Random.Range(2f, 8f);
+            // var autoAttackInterval = 2f;
+            var multipleAttacks = random.Next(0, 2) == 0; // 50% chance for multiple attacks
+            var attacksPerInterval = multipleAttacks ? random.Next(1, 5) : 1;
+            // var attacksPerInterval = 4;
             
-            card.SetData(new CardData
+            List<int> attack = new List<int>();
+            for (int i = 0; i < attacksPerInterval; i++)
+            {
+                attack.Add(random.Next(1, 9));
+            }
+
+            
+            Debug.Log("Attack per interval: " + attacksPerInterval);
+            
+            var templateIndex = random.Next(0, cardTemplates.Count);
+            if(!cardHandManager.HasEnoughSlotsFor(cardTemplates[templateIndex].slotSize))
+                return;                
+            var card = cardDeckManager.CardPrepareForDraw(new CardData
             {
                 Id = Guid.NewGuid().ToString("N"),
                 TotalMana = mana,
@@ -195,10 +218,32 @@ namespace TCG_Card_System.Scripts.Controllers
                 Health = health,
                 TotalAttack = attack,
                 Attack = attack,
-                TemplateId = CardCollectionManager.Instance.cardTemplates[templateIndex].id,
+                TemplateId = cardTemplates[templateIndex].id,
+                AutoAttackInterval = autoAttackInterval,
+                AttacksPerInterval = attacksPerInterval
             });
+            
+            await cardHandManager.DrawCard(card);
+        }
+
+        private async void OpponentPlayCardFromHand()
+        {
+            if (OpponentCardHandManager.Instance.Cards.Count == 0)
+                return;
+            var random = new Random();
+            var cardIndex = random.Next(0, OpponentCardHandManager.Instance.Cards.Count);
+
+            if (cardIndex < 0 )
+                return;
+            
+            var card = OpponentCardHandManager.Instance.GetCardByIndex(cardIndex);
+            
+            if(!OpponentCardBoardManager.Instance.HasEnoughSlotsFor(card))
+            return;
+            
+            var cardAccessor = card.GameObject.GetComponent<CardAccessor>();
+            
             cardAccessor.CardDisplay.UpdateUI(card);
-            cardAccessor.FrameDisplay.UpdateUI(card);
             
             await OpponentCardHandManager.Instance.PlayCard(card, 0);
         }
@@ -215,16 +260,16 @@ namespace TCG_Card_System.Scripts.Controllers
             var showDamageTask = UniTask.CompletedTask;
             
             await OpponentCardBoardManager.Instance.RaiseCard(card);
-            await OpponentCardBoardManager.Instance.CardAttackOpponentCard
+            await OpponentCardBoardManager.Instance.CardAttackOpponentBoard
             (
                 card,
-                targetCard,
+                PlayerCardBoardManager.Instance,
                 () =>
                 {
                     OpponentCardBoardManager.Instance.CardUpdate(card.Data);
                     PlayerCardBoardManager.Instance.CardUpdate(targetCard.Data);
                     
-                    showDamageTask = OpponentCardBoardManager.Instance.CardAttackOpponentCardShowDamage(card, targetCard);
+                    showDamageTask = OpponentCardBoardManager.Instance.CardAttackOpponentCardBoardShowDamage(card, PlayerCardBoardManager.Instance);
                     return UniTask.CompletedTask;
                 }
             );

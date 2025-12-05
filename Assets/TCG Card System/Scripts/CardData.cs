@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 
 namespace TCG_Card_System.Scripts
@@ -11,13 +12,16 @@ namespace TCG_Card_System.Scripts
         public bool CanAttack;
         
         public int TotalMana;
-        public int TotalAttack;
+        public List<int> TotalAttack;
         public int TotalHealth;
         
         public int Mana;
-        public int Attack;
+        public List<int> Attack;
         public int Health;
 
+        public float AutoAttackInterval;
+        public int AttacksPerInterval;
+        
         [UsedImplicitly]
         public CardData() {}
         public CardData(CardTemplate template)
@@ -32,6 +36,9 @@ namespace TCG_Card_System.Scripts
             Mana = template.mana;
             Attack = template.attack;
             Health = template.health;
+            
+            AutoAttackInterval = template.autoAttackInterval;
+            AttacksPerInterval = template.attackPerInterval;
         }
 
         public bool Equals(CardData other) =>

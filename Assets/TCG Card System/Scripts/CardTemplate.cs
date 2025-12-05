@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TCG_Card_System.Scripts.Enums;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ namespace TCG_Card_System.Scripts
         [SerializeField]
         public string id;
         [SerializeField]
-        public Texture2D characterImage;
+        public Sprite characterImage;
         [SerializeField]
         public Texture2D backgroundImage;
         [SerializeField]
@@ -23,11 +24,21 @@ namespace TCG_Card_System.Scripts
         [SerializeField]
         public int mana;
         [SerializeField]
-        public int attack;
+        public List<int> attack;
+        public CardAttackTemplate attackTemplate;
         [SerializeField]
         public int health;
         
+        [SerializeField]
+        public int slotSize = 1; 
+        [SerializeField, Tooltip("The delay between auto attacks in seconds.")]
+        public float autoAttackInterval = 1f;
+        [SerializeField]
+        public int attackPerInterval = 1;
+        
         public bool IsMelee => attackType.type == ECardAttack.Melee;
         public bool IsRanged => attackType.type == ECardAttack.Ranged;
+
+        [SerializeField] public CardSkinTemplate cardSkin;
     }
 }

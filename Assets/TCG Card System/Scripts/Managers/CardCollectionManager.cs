@@ -8,7 +8,9 @@ namespace TCG_Card_System.Scripts.Managers
         public static CardCollectionManager Instance { get; private set; }
 
         [SerializeField]
-        public List<CardTemplate> cardTemplates = new();
+        public List<CardTemplate> playerCardTemplates = new();
+        [SerializeField]
+        public List<CardTemplate> opponentCardTemplates = new();
         
         private void Awake()
         {
@@ -22,8 +24,5 @@ namespace TCG_Card_System.Scripts.Managers
 
             Instance = this;
         }
-        
-        public CardTemplate GetCardTemplate(string templateId) =>
-            cardTemplates.Find(x => x.id == templateId);
     }
 }

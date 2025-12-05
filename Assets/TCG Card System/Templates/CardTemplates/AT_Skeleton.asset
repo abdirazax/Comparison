@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d81356434d8f488db0cf3d403b4b6b19, type: 3}
+  m_Name: AT_Skeleton
+  m_EditorClassIdentifier: 
+  onCardSprite:
+  - {fileID: 21300000, guid: 8b26dd3b8917d544f9c3184cecfc4797, type: 3}
+  onCardMaterial: {fileID: 2100000, guid: 9948ea8c3dba5f148a054c25de9e9fc4, type: 2}
+  onCardColor:
+  - {r: 0, g: 0, b: 0, a: 0}
+  onTargetSprite:
+  - {fileID: 21300000, guid: 50a2248b1460a154e9665cade492d430, type: 3}
+  onTargetMaterial: {fileID: 2100000, guid: e2074cad6808f3747844a4a7bf39f98a, type: 2}
+  onTargetColor:
+  - {r: 0, g: 0.8789158, b: 2, a: 1}
+  bulletSprite:
+  - {fileID: 0}
+  bulletMaterial: {fileID: 0}
+  bulletColor:
+  - {r: -2.5946864e+33, g: 7.03e-43, b: -7.7486124e+26, a: 7.03e-43}
+  bulletTrailSprite:
+  - {fileID: 0}
+  bulletTrailMaterial: {fileID: 0}
+  bulletTrailColor:
+  - {r: -2.5946864e+33, g: 7.03e-43, b: -7.7486124e+26, a: 7.03e-43}
+  muzzleFlashSprite:
+  - {fileID: 0}
+  muzzleFlashMaterial: {fileID: 0}
+  muzzleFlashColor:
+  - {r: -2.5946864e+33, g: 7.03e-43, b: -7.7486124e+26, a: 7.03e-43}
+  onCardEffectDurationFactor:
+  - {x: 0.06, y: 0.3, z: 0.06, w: 0}
+  onEnemyEffectDurationFactor:
+  - {x: 0.06, y: 0.3, z: 0.06, w: 0.3}
+  bulletTrailEffectDurationFactor:
+  - {x: 0.06, y: 0.3, z: 0.06, w: 0}
