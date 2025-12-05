@@ -21,7 +21,7 @@ namespace TCG_Card_System.Scripts.Effects
         private void Awake()
         {
             _dissolveAmountProperty = Shader.PropertyToID(amountPropertyReference);
-            _material = GetComponent<SpriteRenderer>().material;
+            _material = GetComponent<MeshRenderer>().material;
             _collider = GetComponent<MeshCollider>();
 
             _visible = _material.GetFloat(_dissolveAmountProperty) > 0f;
@@ -110,7 +110,7 @@ namespace TCG_Card_System.Scripts.Effects
                 (
                     amountFrom,
                     amountTo,
-                    elapsedTime / dissolveTime      
+                    elapsedTime / dissolveTime
                 );
 
                 _material.SetFloat(_dissolveAmountProperty, lerpedDissolve);

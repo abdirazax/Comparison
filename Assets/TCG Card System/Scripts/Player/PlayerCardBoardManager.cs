@@ -3,15 +3,12 @@ using Cysharp.Threading.Tasks;
 using TCG_Card_System.Scripts.Enums;
 using TCG_Card_System.Scripts.EventArgs;
 using TCG_Card_System.Scripts.Managers;
-using TCG_Card_System.Scripts.Opponent;
 using UnityEngine;
 
 namespace TCG_Card_System.Scripts.Player
 {
     public class PlayerCardBoardManager : CardBoardManager
     {
-        public override Team Team { get; } = new Team("Player Team", 100);
-        
         public static PlayerCardBoardManager Instance { get; private set; }
         
         protected override string LayerName => "Player";
@@ -154,10 +151,10 @@ namespace TCG_Card_System.Scripts.Player
                 if (targetOpponentCard.State == EBattleCardState.Death)
                     return;
                 
-                await CardAttackOpponentBoard
+                await CardAttackOpponentCard
                 (
                     card, 
-                    OpponentCardBoardManager.Instance
+                    targetOpponentCard
                     // () =>
                     // {
                     //     CardUpdateResolve(card.Data.Id);
@@ -241,8 +238,6 @@ namespace TCG_Card_System.Scripts.Player
             var cardAccessor = args.Card.GameObject.GetComponent<CardAccessor>();
             cardAccessor.FrameSortingGroup.sortingOrder = 0;
 
-            Debug.Log(cardScale);
-            
             await CardAnimationStart
             (
                 args.Card,

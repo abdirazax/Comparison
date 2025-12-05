@@ -1,43 +1,34 @@
-    using TCG_Card_System.Scripts.Effects;
-    using TCG_Card_System.Scripts.Managers;
-    using UnityEngine;
+using TCG_Card_System.Scripts.Effects;
+using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.Serialization;
 
 namespace TCG_Card_System.Scripts
 {
     public class CardAccessor : MonoBehaviour
     {
-        #region Card
-        
         public Card Card;
         
+        #region Card
         public GameObject cardLayout;
 
         public CardDisplay CardDisplay => cardLayout.GetComponent<CardDisplay>();
         public SortingGroup CardSortingGroup => cardLayout.GetComponent<SortingGroup>();
         
+        public DissolveEffect CardDissolveEffect => cardLayout.GetComponent<DissolveEffect>();
+        public HighlightEffect CardHighlightEffect => cardLayout.GetComponent<HighlightEffect>();
+        
         #endregion
 
-        #region Attack
+        #region Frame
         
-        public GameObject attackLayout;
+        public GameObject frameLayout;
 
-        public CardAttackDisplay CardAttackDisplay => attackLayout.GetComponent<CardAttackDisplay>();
-        public SortingGroup FrameSortingGroup => attackLayout.GetComponent<SortingGroup>();
+        public FrameDisplay FrameDisplay => frameLayout.GetComponent<FrameDisplay>();
+        public SortingGroup FrameSortingGroup => frameLayout.GetComponent<SortingGroup>();
+        
+        public DissolveEffect FrameDissolveEffect => frameLayout.GetComponent<DissolveEffect>();
+        public HighlightEffect FrameHighlightEffect => frameLayout.GetComponent<HighlightEffect>();
      
         #endregion
-
-        public void UpdateUI(Card card)
-        {
-            CardDisplay.UpdateUI(card);
-            CardAttackDisplay.UpdateUI(card);
-        }
-
-        public void UpdateUI()
-        {
-            CardDisplay.UpdateUI(Card);
-            CardAttackDisplay.UpdateUI(Card);
-        }
     }
 }

@@ -8,14 +8,9 @@ namespace TCG_Card_System.Scripts.Managers
 {
     public abstract class CardBaseManager : MonoBehaviour
     {
-        [SerializeField]
-        protected GridManager gridManager;
-        [SerializeField]
-        protected int maxCardSlots = -1; // -1 means no limit
-        
         public readonly List<Card> Cards = new();
         
-        protected readonly Dictionary<GameObject, CancellationTokenSource> _cardAnimations = new();
+        private readonly Dictionary<GameObject, CancellationTokenSource> _cardAnimations = new();
         
         public bool Exists(string id) =>
             Cards.Any(x => x.Data.Id == id);
@@ -28,63 +23,54 @@ namespace TCG_Card_System.Scripts.Managers
         
         public Card GetCardByIndex(int index) => Cards[index];
         
-        
-        protected int GetCardSlotIndex(string id) => 
-            GetCardSlotIndex(GetCardIndex(id));
-
-        protected int GetCardSlotIndex(int index)
-        {
-            var slotIndex = 0;
-            for (var i = 0; i < index; i++)
-            {
-                slotIndex+= Cards[i].Template.slotSize;
-            }
-            return slotIndex;
-        }
-
-        
         public void ShowCardHighlight(Card card, float thickness = 8, Color? color = null)
         {
             var cardAccessor = card.GameObject.GetComponent<CardAccessor>();
-            
+            cardAccessor.CardHighlightEffect
+                .Show(thickness, color, 3.5f)
+                .Forget();
         }
         
         public void HideCardHighlight(Card card)
         {
             var cardAccessor = card.GameObject.GetComponent<CardAccessor>();
+            cardAccessor.CardHighlightEffect.Hide().Forget();
         }
         
         public void ShowFrameHighlight(Card card, float thickness = 8, Color? color = null)
         {
             var cardAccessor = card.GameObject.GetComponent<CardAccessor>();
-            
+            cardAccessor.FrameHighlightEffect
+                .Show(thickness, color, 3.5f)
+                .Forget();
         }
         
         public void HideFrameHighlight(Card card)
         {
             var cardAccessor = card.GameObject.GetComponent<CardAccessor>();
+            cardAccessor.FrameHighlightEffect.Hide().Forget();
         }
         
         public async UniTask CardAnimateBetweenFrame(Card card, bool isOnTop)
         {
             var cardAccessor = card.GameObject.GetComponent<CardAccessor>();
 
-            // if (isOnTop)
-            // {
-            //     await
-            //     (
-            //         cardAccessor.CardDissolveEffect.Disappear(),
-            //         cardAccessor.FrameDissolveEffect.Appear()
-            //     );
-            // }
-            // else
-            // {
-            //     await
-            //     (
-            //         cardAccessor.CardDissolveEffect.Appear(),
-            //         cardAccessor.FrameDissolveEffect.Disappear()
-            //     );
-            // }
+            if (isOnTop)
+            {
+                await
+                (
+                    cardAccessor.CardDissolveEffect.Disappear(),
+                    cardAccessor.FrameDissolveEffect.Appear()
+                );
+            }
+            else
+            {
+                await
+                (
+                    cardAccessor.CardDissolveEffect.Appear(),
+                    cardAccessor.FrameDissolveEffect.Disappear()
+                );
+            }
         }
         
         protected void SetUnbreakableAnimation(IEnumerable<Card> cards, bool value)
@@ -128,18 +114,6 @@ namespace TCG_Card_System.Scripts.Managers
             {
                 _cardAnimations.Remove(card.GameObject);
             }
-        }
-        protected async UniTask CardAnimationStart
-        (
-            Card card,
-            Vector3Int gridPosition,
-            Quaternion rotation,
-            Vector3 scale,
-            bool ignoreUnbreakableAnimation = false,
-            float animationSpeed = 3f
-        )
-        {
-            await CardAnimationStart(card, gridManager.GetWorldPosition(gridPosition), rotation, card.GameObject.transform.localScale, false, animationSpeed);
         }
         
         protected void CardAnimationStop(Card card)
@@ -200,16 +174,6 @@ namespace TCG_Card_System.Scripts.Managers
             for (var i = 0; i < 2; i++)
                 card.GameObject.transform.GetChild(i).localScale = scale;
         }
-        
-        protected void CancelAllCardAnimations()
-        {
-            foreach (var kv in _cardAnimations.ToList())
-            {
-                kv.Value.Cancel();
-                kv.Value.Dispose();
-                _cardAnimations.Remove(kv.Key);
-            }
-        }
 
         protected virtual void OnDestroy()
         {
@@ -221,31 +185,5 @@ namespace TCG_Card_System.Scripts.Managers
                 _cardAnimations.Remove(cardAnimation.Key);
             }
         }
-        
-        protected int GetCardSlotsCount()
-        {
-            return Cards.Sum(card => card.Template.slotSize);
-        }
-        protected int GetFreeCardSlotsCount()
-        {
-            if (maxCardSlots < 0)
-                return int.MaxValue;
-            return maxCardSlots - GetCardSlotsCount();
-        }
-        public bool HasEnoughSlotsFor(Card card)
-        {
-            if (GetFreeCardSlotsCount() > card.Template.slotSize)
-                return true;
-            return false;
-        }
-
-        public bool HasEnoughSlotsFor(int slotSize)
-        {
-            if (GetFreeCardSlotsCount() > slotSize)
-                return true;
-            return false;
-                
-        }
-
     }
 }

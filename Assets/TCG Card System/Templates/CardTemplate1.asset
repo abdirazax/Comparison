@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91073f2577bd404ca1d53062547aa477, type: 3}
+  m_Name: CardTemplate1
+  m_EditorClassIdentifier: 
+  id: CustomIdentifier1
+  characterImage: {fileID: 2800000, guid: c28c84645a3b84813b18122b9dc14310, type: 3}
+  backgroundImage: {fileID: 2800000, guid: cc6e568b217ea4af180319828c452b27, type: 3}
+  name: Character One
+  description: Lorem ipsum dolor samet
+  attackType:
+    type: 0
+    prefab: {fileID: 68325908656455336, guid: a0c6763f38af044f9adf5a4460c1a78c, type: 3}
+  mana: 1
+  attack: 2
+  health: 3
