@@ -3,14 +3,12 @@ using UnityEngine;
 
 namespace TCG_Card_System.Scripts.Managers
 {
-    public class CardCollectionManager : MonoBehaviour
+    public class CardSkinsManager : MonoBehaviour
     {
-        public static CardCollectionManager Instance { get; private set; }
+        public static CardSkinsManager Instance { get; private set; }
 
         [SerializeField]
-        public List<CardTemplate> playerCardTemplates = new();
-        [SerializeField]
-        public List<CardTemplate> opponentCardTemplates = new();
+        public List<CardSkinTemplate> cardSkinTemplates = new();
         
         private void Awake()
         {
@@ -24,5 +22,8 @@ namespace TCG_Card_System.Scripts.Managers
 
             Instance = this;
         }
+        
+        public CardSkinTemplate GetCardSkinTemplate(string templateId) =>
+            cardSkinTemplates.Find(x => x.id == templateId);
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using TCG_Card_System.Scripts.EventArgs;
+using TCG_Card_System.Scripts.Managers;
 using UnityEngine;
 
 namespace TCG_Card_System.Scripts
@@ -22,6 +23,7 @@ namespace TCG_Card_System.Scripts
         public event EventHandler<CardDragEventArgs> FrameDraggingStarted;
         public event EventHandler<CardDragEventArgs> FrameDragging;
         public event EventHandler<CardDragEventArgs> FrameDraggingEnded;
+
 
         public Func<Card, bool> CanDragCard = _ => true; 
         public Func<Card, bool> CanDragFrame = _ => true;
@@ -284,5 +286,6 @@ namespace TCG_Card_System.Scripts
             // Convert the current mouse position to a world point at the card's depth.
             return MainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, cardScreenDepth));
         }
+        
     }
 }

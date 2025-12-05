@@ -2,7 +2,7 @@ using Cysharp.Threading.Tasks;
 
 namespace TCG_Card_System.Scripts
 {
-    public interface IFrameDisplay
+    public interface IAttackDisplay
     {
         public UniTask ShowDamageTaken(int damage);
     }

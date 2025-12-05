@@ -11,29 +11,29 @@ namespace TCG_Card_System.Scripts.Effects
         
         private void Awake()
         {
-            _mesh = GetComponent<MeshFilter>().mesh;
+            // _mesh = GetComponent<MeshFilter>().mesh;
         }
         
         private void Update()
         {
-            if (!MainCamera)
-                return;
-            
-            var toCamera = MainCamera.transform.position - transform.position;
-
-            // Assuming the gameObject has a MeshFilter component with a mesh
-            var faceNormal = _mesh.normals[0]; // Example: using the first normal
-
-            // Transform the normal to world space
-            var worldNormal = transform.TransformDirection(faceNormal);
-
-            var facing = Vector3.Dot(worldNormal, toCamera) > 0;
-            
-            if (facing == _visible)
-                return;
-
-            _visible = facing;
-            SetVisibility();
+            // if (!MainCamera)
+            //     return;
+            //
+            // var toCamera = MainCamera.transform.position - transform.position;
+            //
+            // // Assuming the gameObject has a MeshFilter component with a mesh
+            // var faceNormal = _mesh.normals[0]; // Example: using the first normal
+            //
+            // // Transform the normal to world space
+            // var worldNormal = transform.TransformDirection(faceNormal);
+            //
+            // var facing = Vector3.Dot(worldNormal, toCamera) > 0;
+            //
+            // if (facing == _visible)
+            //     return;
+            //
+            // _visible = facing;
+            // SetVisibility();
         }
         
         private void SetVisibility()
