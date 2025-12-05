@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
-using JetBrains.Annotations;
 using TCG_Card_System.Scripts.Animations;
 using TCG_Card_System.Scripts.Enums;
 using TCG_Card_System.Scripts.EventArgs;
@@ -15,11 +14,8 @@ namespace TCG_Card_System.Scripts.Managers
         public event EventHandler<CardPlayEventArgs> CardPlayed;
         public event EventHandler<Card> CardDestroyed;
         
-        public event EventHandler<CardAttackEventArgs> OnCardAttackedBoardStarted; 
-        public event EventHandler<CardAttackEventArgs> OnCardAttackedBoardEnded;
-
-        public virtual Team Team { get; } = new Team();
-        public TeamDisplay teamDisplay;
+        public event EventHandler<(string CardId, string TargetCardId)> CardAttackedCardStarted; 
+        public event EventHandler<(string CardId, string TargetCardId)> CardAttackedCardEnded;
         
         protected virtual string LayerName => null;
 
@@ -31,23 +27,19 @@ namespace TCG_Card_System.Scripts.Managers
         
         [SerializeField]
         protected Vector3 cardScale = new(10f, 10f, 1f);
-        [SerializeField]
-        protected Vector3Int gridOffset = Vector3Int.zero;
 
         [SerializeField]
         private float cardSpreadWidth = 5;
         
-        private CardAttackAnimation _attackAnimation;
+        private CardAttackMeleeAnimation _attackMeleeAnimation;
         private CardAttackRangedAnimation _attackRangedAnimation;
-
-        private IList<Vector3> _cardPositions;
 
         protected virtual void Awake()
         {
-            _attackAnimation = GetComponent<CardAttackAnimation>();
+            _attackMeleeAnimation = GetComponent<CardAttackMeleeAnimation>();
             _attackRangedAnimation = GetComponent<CardAttackRangedAnimation>();
         }
-
+        
         public void AddCard(Card card, int? index = null)
         {
             index ??= FindVirtualIndex(card);
@@ -57,17 +49,6 @@ namespace TCG_Card_System.Scripts.Managers
             
             RepositionCards();
         }
-        
-        public void ResetBoard()
-        {
-            foreach (var card in Cards)
-            {
-                Destroy(card.GameObject);
-            }
-            Cards.Clear();
-            RepositionCards();
-        }
-
 
         public void PlayCard(Card card, int? index = null)
         {
@@ -110,72 +91,112 @@ namespace TCG_Card_System.Scripts.Managers
                 
             var cardAccessor = card.GameObject.GetComponent<CardAccessor>();
             cardAccessor.cardLayout.layer = layer;
-            cardAccessor.attackLayout.layer = layer;
+            cardAccessor.frameLayout.layer = layer;
                 
             cardAccessor.Card = card;
             cardAccessor.CardSortingGroup.sortingOrder = sortingOrder;
             
             cardAccessor.CardDisplay.UpdateUI(card);
+            cardAccessor.CardDissolveEffect.dissolveTime = 0.4f;
+            cardAccessor.CardDissolveEffect.SetVisibility(false);
+        
+            cardAccessor.FrameDisplay.UpdateUI(card);
+            cardAccessor.FrameDissolveEffect.dissolveTime = 0.6f;
+            cardAccessor.FrameDissolveEffect.SetVisibility(false);
 
             return card;
         }
 
-        public async UniTask CardAttackOpponentBoard
+        public async UniTask CardAttackOpponentCard
         (
             Card card,
-            CardBoardManager defenderBoard,
+            Card opponentCard,
             Func<UniTask> middle = null
         )
         {
+            SetUnbreakableAnimation(card, true);
             
-            OnCardAttackedBoardStarted?.Invoke
+            CardAttackedCardStarted?.Invoke
             (
                 this,
-                new CardAttackEventArgs
-                {
-                    CardId = card.Data.Id,
-                    TargetBoard = defenderBoard
-                }
+                (
+                    CardId: card.Data.Id,
+                    TargetCardId: opponentCard.Data.Id
+                )
             );
-            defenderBoard.Team.TakeDamage(card.Data.Attack[card.AttackIndexInCombo]);
-            
 
-            var cardIndex = GetCardIndex(card.Data.Id);
+            if (card.Template.attackType.type == ECardAttack.Melee)
+            {
+                await _attackMeleeAnimation.Animate
+                (
+                    card.Data.Id,
+                    card.GameObject,
+                    opponentCard.GameObject,
+                    card.Template.attackType.prefab,
+                    opponentCard.Template.attackType.prefab,
+                    card.GameObject.transform.position,
+                    opponentCard.GameObject.transform.position,
+                    async () =>
+                    {
+                        if (middle != null)
+                            await middle();
+
+                        CardAttackedCardEnded?.Invoke
+                        (
+                            this,
+                            (
+                                CardId: card.Data.Id,
+                                TargetCardId: opponentCard.Data.Id
+                            )
+                        );
+                    }
+                );
+            }
+            else
+            {
+                await _attackRangedAnimation.Animate
+                (
+                    card.Data.Id,
+                    card.Template.attackType.prefab,
+                    card.GameObject.transform.position,
+                    opponentCard.GameObject.transform.position
+                );
+                
+                if (middle != null)
+                    await middle();
+
+                CardAttackedCardEnded?.Invoke
+                (
+                    this,
+                    (
+                        CardId: card.Data.Id,
+                        TargetCardId: opponentCard.Data.Id
+                    )
+                );
+            }
             
-            await _attackAnimation.Animate
-            (
-                card.Data.Id,
-                card,
-                card.GameObject.GetComponent<CardAccessor>().CardAttackDisplay,
-                card.GameObject,
-                defenderBoard.teamDisplay,
-                _cardPositions[cardIndex],
-                _cardPositions[cardIndex] + new Vector3(0, 0, _cardPositions[cardIndex].z) * .2f,
-                0.1f,
-                card.Data.AutoAttackInterval / card.Data.AttacksPerInterval
-            );
-            
+            SetUnbreakableAnimation(card, false);   
         }
 
-        public async UniTask CardAttackOpponentCardBoardShowDamage
+        public async UniTask CardAttackOpponentCardShowDamage
         (
             Card card,
-            CardBoardManager targetCardBoardManager
+            Card targetCard
         )
         {
             var cardAccessor = card.GameObject.GetComponent<CardAccessor>();
-            var cardAttackDisplay = cardAccessor.CardAttackDisplay;
+            var cardFrameDisplay = cardAccessor.FrameDisplay;
             
-            // var opponentCardAccessor = targetCard.GameObject.GetComponent<CardAccessor>();
-            // var opponentCardFrameDisplay = opponentCardAccessor.FrameDisplay;
-            //
-            // var tasks = new List<UniTask> 
-            // {
-            //     // Damage to Target
-            //     opponentCardFrameDisplay.ShowDamageTaken(card.Data.Attack) 
-            // };
-            //
-            // await UniTask.WhenAll(tasks);
+            var opponentCardAccessor = targetCard.GameObject.GetComponent<CardAccessor>();
+            var opponentCardFrameDisplay = opponentCardAccessor.FrameDisplay;
+
+            var tasks = new List<UniTask> 
+            {
+                // Damage to Target
+                opponentCardFrameDisplay.ShowDamageTaken(card.Data.Attack) 
+            };
+
+            await UniTask.WhenAll(tasks);
         }
 
         public async UniTask RaiseCard(Card card)
@@ -209,13 +230,13 @@ namespace TCG_Card_System.Scripts.Managers
                 cardScale
             );
         }
-
-        public void RepositionCards(Card virtualCard = null, int? virtualIndex = null)
+        
+        public void RepositionCards(int? virtualIndex = null)
         {
-            _cardPositions = GetCardPositions(virtualCard, virtualIndex);
+            var cardPositions = GetCardPositions(virtualIndex);
             for (var i = 0; i < Cards.Count; i++)
             {
-                var cardPosition = _cardPositions[i];
+                var cardPosition = cardPositions[i];
                 var card = Cards[i];
                 card.CachePosition = cardPosition;
                 card.CacheRotation = Quaternion.Euler(90, 0, 0);
@@ -279,6 +300,7 @@ namespace TCG_Card_System.Scripts.Managers
             card.SetData(cardData);
             
             var cardAccessor = card.GameObject.GetComponent<CardAccessor>();
+            cardAccessor.FrameDisplay.UpdateUI(card);
         }
         
         public async UniTask CardDestroy(string cardId)
@@ -291,27 +313,36 @@ namespace TCG_Card_System.Scripts.Managers
             CardDestroyed?.Invoke(this, card);
             
             var cardAccessor = card.GameObject.GetComponent<CardAccessor>();
+            await cardAccessor.FrameDissolveEffect.Disappear();
             
             Destroy(card.GameObject);
             RepositionCards();
         }
-        
-        private IList<Vector3> GetCardPositions(Card virtualCard = null, int? virtualIndex = null)
+
+        private IList<Vector3> GetCardPositions(int? virtualIndex)
         {
+            var cardWidth = 0.5f; // Adjust based on your card size or desired spacing
+            var cardsCount = virtualIndex.HasValue ? Cards.Count + 1 : Cards.Count;
+
+            // Calculate the total width needed for all cards, including the spacing between them
+            var totalWidthNeeded = cardWidth * cardsCount + cardSpreadWidth * (cardsCount - 1);
+
             var output = new List<Vector3>();
 
-            for (int i = 0; i < Cards.Count; i++)
+            // Adjust startPositionX calculation to accurately center the cards
+            var startPositionX = transform.position.x - (totalWidthNeeded - cardWidth) / 2;
+
+            for (var i = 0; i < cardsCount; i++)
             {
-                
-                Vector3Int offset = gridOffset;
-                if (virtualIndex.HasValue && virtualCard != null)
-                {
-                    offset += new Vector3Int((virtualCard.Template.slotSize + 1) * (i < virtualIndex ? -1 : 1), 0, 0);
-                }
-                Vector3 position = gridManager.GetXCenteredPosition(GetCardSlotIndex(i), GetCardSlotsCount(),
-                    Cards[i].Template.slotSize, offset);
+                if (i == virtualIndex)
+                    continue;
+        
+                var positionX = startPositionX + i * (cardWidth + cardSpreadWidth);
+                var position = new Vector3(positionX, transform.position.y, transform.position.z);
+
                 output.Add(position);
-            }   
+            }
+
             return output;
         }
         
@@ -334,7 +365,6 @@ namespace TCG_Card_System.Scripts.Managers
             //     return;
             //
             
-            
             float time = 0;
             var startPosition = card.GameObject.transform.position;
             var startRotation = card.GameObject.transform.rotation;
@@ -344,7 +374,7 @@ namespace TCG_Card_System.Scripts.Managers
                 .Select(x => x.localScale)
                 .Take(2)
                 .ToList();
-            
+
             while (time < 1)
             {
                 card.GameObject.transform.SetPositionAndRotation
@@ -352,12 +382,10 @@ namespace TCG_Card_System.Scripts.Managers
                     Vector3.Lerp(startPosition, position, time),
                     Quaternion.Lerp(startRotation, rotation, time)
                 );
-
+                
                 for (var i = 0; i < 2; i++)
-                {
                     card.GameObject.transform.GetChild(i).localScale = Vector3.Lerp(startScales[i], scale, time);
-                }
-
+                
                 time += Time.deltaTime * animationSpeed; // Adjust time increment for speed
                 await UniTask.Yield();
             }
@@ -370,8 +398,6 @@ namespace TCG_Card_System.Scripts.Managers
             
             for (var i = 0; i < 2; i++)
                 card.GameObject.transform.GetChild(i).localScale = scale;
-            
-            
         }
     }
 }

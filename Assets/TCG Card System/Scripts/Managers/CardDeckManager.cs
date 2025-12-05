@@ -24,16 +24,6 @@ namespace TCG_Card_System.Scripts.Managers
         {
             SpawnDeck(numberOfCards);
         }
-        
-        public void ResetDeck()
-        {
-            foreach (var card in Cards)
-            {
-                Destroy(card.GameObject);
-            }
-            Cards.Clear();
-            SpawnDeck(numberOfCards);
-        }
 
         public void SpawnDeck(int count)
         {
@@ -66,11 +56,16 @@ namespace TCG_Card_System.Scripts.Managers
                 
             var cardAccessor = card.GameObject.GetComponent<CardAccessor>();
             cardAccessor.cardLayout.layer = layer;
-            cardAccessor.attackLayout.layer = layer;
+            cardAccessor.frameLayout.layer = layer;
                 
             cardAccessor.Card = card;
             cardAccessor.CardSortingGroup.sortingOrder = -(numberOfCards - index);
                 
+            cardAccessor.CardDissolveEffect.dissolveTime = 0.4f;
+            cardAccessor.CardDissolveEffect.SetVisibility(true);
+        
+            cardAccessor.FrameDissolveEffect.dissolveTime = 0.6f;
+            cardAccessor.FrameDissolveEffect.SetVisibility(false);
 
             return card;
         }
@@ -85,8 +80,10 @@ namespace TCG_Card_System.Scripts.Managers
             if (cardData != null)
             {
                 card.SetData(cardData);
+
                 var cardAccessor = card.GameObject.GetComponent<CardAccessor>();
                 cardAccessor.CardDisplay.UpdateUI(card);
+                cardAccessor.FrameDisplay.UpdateUI(card);
             }
 
             Cards.Remove(card);

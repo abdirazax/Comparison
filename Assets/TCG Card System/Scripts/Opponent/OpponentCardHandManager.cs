@@ -39,9 +39,10 @@ namespace TCG_Card_System.Scripts.Opponent
         public async UniTask PlayCard(Card card, int boardIndex)
         {
             Cards.Remove(card);
-            RepositionCards();
+
+            await DrawCardToMidPoint(card);
+            await UniTask.Delay(TimeSpan.FromSeconds(1));
             OpponentCardBoardManager.Instance.PlayCard(card, boardIndex);
-            
         }
     }
 }

@@ -1,11 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
-using TCG_Card_System.Scripts.EventArgs;
-using TCG_Card_System.Scripts.States;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace TCG_Card_System.Scripts.Managers
 {
@@ -15,12 +11,6 @@ namespace TCG_Card_System.Scripts.Managers
         private GameObject cardPrefab;
         [SerializeField]
         protected Vector3 cardScale = new(5f, 5f, 1f);
-        protected Vector3Int CurrentGridOffset = Vector3Int.zero;
-        [SerializeField]
-        protected Vector3Int gridOffsetWhenPreparing = Vector3Int.zero;
-        [SerializeField]
-        protected Vector3Int gridOffsetAtBattle = Vector3Int.zero;
-
         [SerializeField]
         protected float cardSpreadWidth = 6;
         [SerializeField]
@@ -36,48 +26,12 @@ namespace TCG_Card_System.Scripts.Managers
         [SerializeField]
         protected bool mirror;
         
-        [SerializeField]
-        protected BattleStateManager battleStateManager;
-        
         protected int VirtualIndex;
-
-        private void OnEnable()
-        {
-            battleStateManager.OnBattleStateChanged += OnBattleStateChanged;
-        }
-
-        private void OnDisable()
-        {
-            battleStateManager.OnBattleStateChanged -= OnBattleStateChanged;
-        }
-
-        public void ResetHand()
-        {
-            foreach (var card in Cards)
-            {
-                Destroy(card.GameObject);
-            }
-            Cards.Clear();
-            VirtualIndex = 0;
-        }
-        
-        private void OnBattleStateChanged(object sender, BattleStateEventArgs e)
-        {
-            if (e.BattleState is BattleGoingOnState)
-            {
-                CurrentGridOffset = gridOffsetAtBattle;
-            }
-            else if (e.BattleState is BattlePreparingState)
-            {
-                CurrentGridOffset = gridOffsetWhenPreparing;
-            }
-            RepositionCards();
-        }
 
         public async UniTask DrawInitialCards(IEnumerable<Card> initialCards)
         {
             var cards = initialCards.ToList();
-            var cardTransforms = GetCardTransforms(Cards);
+            var cardTransforms = GetCardTransforms(cards.Count);
 
             SetUnbreakableAnimation(cards, true);
 
@@ -104,13 +58,6 @@ namespace TCG_Card_System.Scripts.Managers
 
         public async UniTask DrawCard(Card card, int? index = null)
         {
-            
-            if (!HasEnoughSlotsFor(card?.Template.slotSize ?? 1))
-            {
-                Debug.LogWarning($"Not enough slots to draw card {card?.Data.Id}. Current free slots: {GetFreeCardSlotsCount()}, Required slots: {card?.Template.slotSize}");
-                return;
-            }
-            
             SetUnbreakableAnimation(card, true);
             
             AddCardToHand(card, index);
@@ -129,19 +76,19 @@ namespace TCG_Card_System.Scripts.Managers
                 Cards.Add(card);
         }
 
-        protected async UniTask RepositionCards
+        private async UniTask RepositionCards
         (
             GameObject ignoreUnbreakableAnimationForGameObject = null,
             float animationSpeed = 3f
         )
         {
             var tasks = new List<UniTask>();
-            var cardTransforms = GetCardTransforms(Cards);
+            var cardTransforms = GetCardTransforms(Cards.Count);
             for (var index = 0; index < Cards.Count; index++)
             {
                 var cardTransform = cardTransforms[index];
                 var card = Cards[index];
-                CancelAllCardAnimations();
+
                 tasks.Add(RepositionCard
                 (
                     card,
@@ -185,24 +132,31 @@ namespace TCG_Card_System.Scripts.Managers
                 animationSpeed
             );
         }
-        protected IList<(Vector3 Position, Quaternion Rotation)> GetCardTransforms(List<Card> cards, int focusedIndex = -1)
+        
+        protected IList<(Vector3 Position, Quaternion Rotation)> GetCardTransforms(int count, int focusedIndex = -1)
         {
+            var dynamicProperties = CalculateDynamicProperties(count);
             var output = new List<(Vector3 Position, Quaternion Rotation)>();
-            for (int i = 0; i < cards.Count; i++)
+    
+            for (var i = 0; i < count; i++)
             {
-                Vector3Int offset = CurrentGridOffset;
-                if ((focusedIndex > -1) && (i != focusedIndex))
+                var zOffset = CalculateZOffset(count, i, dynamicProperties.dynamicZAxisPeak);
+                var positionOffset = CalculatePositionOffset(count, i, dynamicProperties, zOffset, focusedIndex);
+                var rotation = CalculateRotation(i, dynamicProperties.startAngle, dynamicProperties.angleStep, focusedIndex);
+        
+                if (mirror)
                 {
-                    offset += new Vector3Int( 1 * (i < focusedIndex ? -1 : 1), 0, 0);
+                    var euler = rotation.eulerAngles;
+                    euler.x += 180;
+                    rotation = Quaternion.Euler(euler);
                 }
-                Vector3 position = gridManager.GetXCenteredPosition(GetCardSlotIndex(i), GetCardSlotsCount(),
-                    cards[i].Template.slotSize, offset);
-                output.Add(
-                    (position, Quaternion.Euler(90f, 0f, 0)));
-            }   
+        
+                var position = transform.position + positionOffset;
+                output.Add((position, rotation));
+            }
+    
             return output;
         }
-        
 
         private (float dynamicSpreadWidth, float dynamicSpreadAngle, float dynamicZAxisPeak, float angleStep, float startAngle) CalculateDynamicProperties(int count)
         {
@@ -215,6 +169,73 @@ namespace TCG_Card_System.Scripts.Managers
             return (dynamicSpreadWidth, dynamicSpreadAngle, dynamicZAxisPeak, angleStep, startAngle);
         }
 
-        
+        private float CalculateZOffset(int count, int index, float dynamicZAxisPeak)
+        {
+            var zOffsetIncrement = dynamicZAxisPeak * 2 / Mathf.Max(count - 1, 1);
+            var zOffset = -Mathf.Abs(dynamicZAxisPeak - index * zOffsetIncrement);
+            if (mirror)
+            {
+                zOffset *= -1; // Reverse the direction for Z offset when outwards is true
+            }
+            return zOffset;
+        }
+
+        private Quaternion CalculateRotation(int index, float startAngle, float angleStep, int focusedIndex)
+        {
+            var angle = startAngle - angleStep * index;
+            if (mirror)
+            {
+                angle *= -1; // Invert angle when outwards is true to mirror the fan
+            }
+            Quaternion rotation;
+            if (focusedIndex != -1 && index == focusedIndex)
+            {
+                rotation = Quaternion.Euler(90f, 0f, 0);
+            }
+            else
+            {
+                rotation = Quaternion.Euler(90f, 0f, angle);
+            }
+            return rotation;
+        }
+
+        private Vector3 CalculatePositionOffset
+        (
+            int count,
+            int index,
+            (float dynamicSpreadWidth, float dynamicSpreadAngle, float dynamicZAxisPeak, float angleStep, float startAngle) props, 
+            float zOffset,
+            int focusedIndex
+        )
+        {
+            var additionalOffsetForAdjacentCards = props.dynamicSpreadWidth * 0.25f;
+            var normalizedPosition = (float)index / Mathf.Max(count - 1, 1);
+            var centeredPosition = normalizedPosition - 0.5f;
+            var positionOffset = new Vector3(centeredPosition * props.dynamicSpreadWidth, 0f, zOffset);
+
+            if (focusedIndex == -1)
+                return positionOffset;
+            
+            if (index == focusedIndex)
+            {
+                zOffset = 0; // Adjusted within this method for simplicity
+                positionOffset.z = zOffset;
+            }
+            else
+            {
+                float direction = index < focusedIndex ? -1 : 1;
+                if (index == focusedIndex - 1 || index == focusedIndex + 1)
+                {
+                    positionOffset.x += additionalOffsetForAdjacentCards * direction;
+                }
+                else
+                {
+                    var adjustedPosition = centeredPosition + direction * additionalOffsetForAdjacentCards / props.dynamicSpreadWidth;
+                    positionOffset.x = adjustedPosition * props.dynamicSpreadWidth;
+                }
+            }
+
+            return positionOffset;
+        }
     }
 }
